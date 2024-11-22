@@ -23,7 +23,7 @@ const Home = () => {
             redirect: "follow"
         };
 
-        fetch("api/generate", requestOptions)
+        fetch("/api/generate", requestOptions)
             .then((response) => response.json())
             .then((result) => {
                 setGenerated(`${process.env.NEXT_PUBLIC_HOST}/${shorturl}`)
