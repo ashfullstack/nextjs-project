@@ -11,26 +11,60 @@ const poppins = localFont({
 });
 
 export default function Home() {
-  return (
-    <main className="bg-red-100">
-      <section className="grid grid-cols-2 h-[50vh]">
-        <div className="flex flex-col gap-4 items-center justify-center">
-          <p className={`text-3xl font-bold ${poppins.className}`}>
-            The best URL shortener in the Market
-          </p>
-          <p className="px-56 text-center">
-            We are the most straightfoward URL Shortener in the world. Most of the url shorteners will track you or ask you to give your details for login. We understand your needs and hence we have created this URL shortener
-          </p>
-          <div className='flex gap-3 justify-start'>
-          <Link href="/shorten"><button className='bg-red-500 rounded-lg shadow-lg p-3 py-1 font-bold text-white'>Try Now</button></Link>
-          <Link href="/github"><button className='bg-red-500 rounded-lg shadow-lg p-3 py-1 font-bold text-white'>GitHub</button></Link>
-        </div>
-        </div>
-        <div className=" flex justify-start relative">
-          <Image className="mix-blend-darken" alt="an Image of a vector" src={"/vector.jpg"} fill={true}    />
-        </div>
+   const [url, seturl] = useState("")
+    const [shorturl, setshorturl] = useState("")
+    const [generated, setGenerated] = useState("")
 
-      </section>
-    </main>
-  );
+    const generate = () => {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            "url": url,
+            "shorturl": shorturl
+        });
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        fetch("/api/generate", requestOptions)
+            .then((response) => response.json())
+            .then((result) => {
+                setGenerated(`${process.env.NEXT_PUBLIC_HOST}/${shorturl}`)
+                seturl("")   
+                setshorturl("")
+                console.log(result)
+                alert(result.message)
+            
+            })
+            .catch((error) => console.error(error));
+    }
+
+
+    return (
+        <div className='mx-auto max-w-lg bg-red-100 my-16 p-8 rounded-lg flex flex-col gap-4'>
+            <h1 className='font-bold text-2xl'>Generate your short URLs</h1>
+            <div className='flex flex-col gap-2'>
+                <input type="text"
+                    value={url}
+                    className='px-4 py-2 focus:outline-red-600 rounded-md'
+                    placeholder='Enter your URL'
+                    onChange={e => { seturl(e.target.value) }} />
+
+                <input type="text"
+                    value={shorturl}
+                    className='px-4 py-2 focus:outline-red-600 rounded-md'
+                    placeholder='Enter your preferred short URL text'
+                    onChange={e => { setshorturl(e.target.value) }} />
+                <button onClick={generate} className='bg-red-500 rounded-lg shadow-lg p-3 py-1 my-3 font-bold text-white'>Generate</button>
+            </div>
+
+            {generated && <> <span className='font-bold text-lg'>Your Link </span><code><Link target="_blank" href={generated}>{generated}</Link> 
+                </code></>}
+        </div>
+    )
 }
