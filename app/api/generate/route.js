@@ -5,7 +5,7 @@ import { MongoClient } from 'mongodb'
 export async function POST(request) {
 
     const body = await request.json() 
-    const client = await clientPromise;
+    const client = await MongoClient;
     const db = client.db("bitlinks")
     const collection = db.collection("url")
 
