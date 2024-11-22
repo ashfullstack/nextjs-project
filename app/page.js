@@ -1,17 +1,9 @@
-import Image from "next/image";
-import localFont from "next/font/local";
-import Link from "next/link";
+"use client"
+import Link from 'next/link'
+import React, { useState } from 'react'
 
-
-
-const poppins = localFont({
-  src: "./fonts/Poppins-ExtraBold.ttf",
-  variable: "--font-poppins",
-  weight: "100 900",
-});
-
-export default function Home() {
-   const [url, seturl] = useState("")
+const Shorten = () => {
+    const [url, seturl] = useState("")
     const [shorturl, setshorturl] = useState("")
     const [generated, setGenerated] = useState("")
 
@@ -68,3 +60,5 @@ export default function Home() {
         </div>
     )
 }
+
+export default Shorten
