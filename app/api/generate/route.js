@@ -1,11 +1,11 @@
 
-// import clientPromise from "@/lib/mongodb"
-import { MongoClient } from 'mongodb'
+import clientPromise from "@/lib/mongodb"
+
 
 export async function POST(request) {
 
     const body = await request.json() 
-    const client = await MongoClient;
+    const client = await clientPromise;
     const db = client.db("bitlinks")
     const collection = db.collection("url")
 
