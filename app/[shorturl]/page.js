@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 // import clientPromise from "@/lib/mongodb"
-import { MongoClient } from 'mongodb'
+import { clientPromise } from '@lib/mongodb'
 
 
 export default async function Page({ params }) {
